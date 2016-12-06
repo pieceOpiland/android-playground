@@ -1,4 +1,4 @@
-package com.example.playground.androidplayground;
+package com.example.pie.android;
 
 import org.junit.Test;
 
