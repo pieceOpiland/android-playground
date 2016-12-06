@@ -4,7 +4,9 @@ import com.google.gson.annotations.Expose;
 
 public class TodoItem {
 
-    @Expose(deserialize = false)
+    // I don't think this actually does anything with converter-gson.
+    // see: https://static.javadoc.io/com.google.code.gson/gson/2.6.2/com/google/gson/GsonBuilder.html#excludeFieldsWithoutExposeAnnotation--
+    @Expose(serialize = false)
     private int id;
 
     private String task;
