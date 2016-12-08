@@ -32,56 +32,48 @@ public class MainActivity extends AppCompatActivity {
         final ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(adapter);
 
-        final EditText input = (EditText) findViewById(R.id.newTask);
-
-        Button submitButton = (Button) findViewById(R.id.submitButton);
-        submitButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String userInput = input.getText().toString().trim();
-                if(userInput.length() > 0){
-                    TodoItem newItem = new TodoItem();
-                    newItem.setTask(userInput);
-                    TodoResource.getInstance().addItem(newItem, new Callback<TodoItem>() {
-                        @Override
-                        public void onResponse(Call<TodoItem> call, Response<TodoItem> response) {
-                            adapter.add(response.body());
-                            input.setText("");
-                        }
-
-                        @Override
-                        public void onFailure(Call<TodoItem> call, Throwable t) {
-                            t.printStackTrace();
-                        }
-                    });
-                }
-            }
-        });
-
-        Button clearButton = (Button) findViewById(R.id.clearButton);
-        clearButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TodoResource.getInstance().clearDone(new Callback<List<TodoItem>>() {
-                    @Override
-                    public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
-                        adapter.clear();
-                        adapter.addAll(response.body());
-                        input.setText("");
-                    }
-
-                    @Override
-                    public void onFailure(Call<List<TodoItem>> call, Throwable t) {
-                        t.printStackTrace();
-                    }
-                });
-            }
-        });
-
         TodoResource.getInstance().getItems(new Callback<List<TodoItem>>() {
             @Override
             public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
                 adapter.addAll(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<List<TodoItem>> call, Throwable t) {
+                t.printStackTrace();
+            }
+        });
+    }
+
+    public void submitItem(View v){
+        final EditText input = (EditText) findViewById(R.id.newTask);
+        String userInput = input.getText().toString().trim();
+        if(userInput.length() > 0){
+            TodoItem newItem = new TodoItem();
+            newItem.setTask(userInput);
+            TodoResource.getInstance().addItem(newItem, new Callback<TodoItem>() {
+                @Override
+                public void onResponse(Call<TodoItem> call, Response<TodoItem> response) {
+                    adapter.add(response.body());
+                    input.setText("");
+                }
+
+                @Override
+                public void onFailure(Call<TodoItem> call, Throwable t) {
+                    t.printStackTrace();
+                }
+            });
+        }
+    }
+
+    public void clearCompletedTasks(View v){
+        final EditText input = (EditText) findViewById(R.id.newTask);
+        TodoResource.getInstance().clearDone(new Callback<List<TodoItem>>() {
+            @Override
+            public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
+                adapter.clear();
+                adapter.addAll(response.body());
+                input.setText("");
             }
 
             @Override
