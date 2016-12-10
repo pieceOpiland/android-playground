@@ -1,6 +1,7 @@
 package com.example.pie.android;
 
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
@@ -19,27 +20,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     private ArrayAdapter<TodoItem> adapter;
+    private SwipeRefreshLayout refresh;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        refresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
+        refresh.setOnRefreshListener(this);
         adapter = new TodoAdapter(this, R.layout.todo_item, new ArrayList<TodoItem>() );
 
         final ListView list = (ListView) findViewById(R.id.list);
         list.setAdapter(adapter);
+        retrieveItems();
+    }
 
+    public void retrieveItems() {
         TodoResource.getInstance().getItems(new Callback<List<TodoItem>>() {
             @Override
             public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
+                // This should probably be made more efficient.
+                adapter.clear();
                 adapter.addAll(response.body());
+                refresh.setRefreshing(false);
             }
 
             @Override
             public void onFailure(Call<List<TodoItem>> call, Throwable t) {
+                refresh.setRefreshing(false);
                 t.printStackTrace();
             }
         });
@@ -81,5 +92,10 @@ public class MainActivity extends AppCompatActivity {
                 t.printStackTrace();
             }
         });
+    }
+
+    @Override
+    public void onRefresh() {
+        retrieveItems();
     }
 }
