@@ -3,9 +3,12 @@ package com.example.pie.android;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
@@ -29,6 +32,9 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
+
         refresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
         refresh.setOnRefreshListener(this);
         adapter = new TodoAdapter(this, R.layout.todo_item, new ArrayList<TodoItem>() );
@@ -77,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         }
     }
 
-    public void clearCompletedTasks(View v){
+    public void clearCompletedTasks(View v) {
         final EditText input = (EditText) findViewById(R.id.newTask);
         TodoResource.getInstance().clearDone(new Callback<List<TodoItem>>() {
             @Override
@@ -103,5 +109,24 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     public void onRestart() {
         super.onResume();
         retrieveItems();
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu m) {
+        MenuInflater mI = getMenuInflater();
+        mI.inflate(R.menu.main_menu, m);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()) {
+            case R.id.menu_refresh:
+                refresh.setRefreshing(true);
+                retrieveItems();
+                break;
+        }
+        return true;
     }
 }
