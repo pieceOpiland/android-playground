@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.pie.android.adapters.TodoAdapter;
 import com.example.pie.android.models.TodoItem;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             @Override
             public void onFailure(Call<List<TodoItem>> call, Throwable t) {
                 refresh.setRefreshing(false);
+                Toast.makeText(MainActivity.this, "Failed to contact Server.", Toast.LENGTH_SHORT).show();
                 t.printStackTrace();
             }
         });
@@ -77,6 +79,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
                 @Override
                 public void onFailure(Call<TodoItem> call, Throwable t) {
+                    Toast.makeText(MainActivity.this, "Failed to contact Server.", Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
             });
