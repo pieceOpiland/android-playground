@@ -1,4 +1,4 @@
-package com.example.pie.android.models;
+package com.example.pie.android.model;
 
 import junit.framework.Assert;
 

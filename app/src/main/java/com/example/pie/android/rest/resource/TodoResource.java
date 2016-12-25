@@ -1,14 +1,13 @@
-package com.example.pie.android.resources;
+package com.example.pie.android.rest.resource;
 
-import com.example.pie.android.models.TodoItem;
+import com.example.pie.android.model.TodoItem;
+import com.example.pie.android.rest.RetrofitProvider;
 
 import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -19,16 +18,11 @@ import retrofit2.http.Path;
 public class TodoResource {
 
     private static TodoResource instance = new TodoResource();
-    private TodoInterface resource;
+    private TodoApi resource;
 
     private TodoResource() {
-        Retrofit rfit = new Retrofit.Builder()
-                .baseUrl("https://limitless-everglades-64303.herokuapp.com/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        resource = rfit.create(TodoInterface.class);
+        resource = RetrofitProvider.getInstance().create(TodoApi.class);
     }
-
 
     public static TodoResource getInstance() {
         return instance;
@@ -42,24 +36,31 @@ public class TodoResource {
         resource.addItem(item).enqueue(cb);
     }
 
+    public void addItems(List<TodoItem> items, Callback<List<TodoItem>> cb) {
+        resource.addItems(items).enqueue(cb);
+    }
+
     public void clearDone(Callback<List<TodoItem>> cb) {
         resource.clearDone().enqueue(cb);
     }
-    public void finishItem(int id, Callback<ResponseBody> cb) {
-        resource.finishItem(id).enqueue(cb);
+    public void completeItem(int id, Callback<ResponseBody> cb) {
+        resource.completeItem(id).enqueue(cb);
     }
 
-    private interface TodoInterface {
+    public interface TodoApi {
         @GET("/rest/todo")
         Call<List<TodoItem>> getItems();
 
         @POST("/rest/todo")
         Call<TodoItem> addItem(@Body TodoItem item);
 
+        @POST("/rest/todo")
+        Call<List<TodoItem>> addItems(@Body List<TodoItem> items);
+
         @DELETE("/rest/todo")
         Call<List<TodoItem>> clearDone();
 
         @PUT("/rest/todo/{id}")
-        Call<ResponseBody> finishItem(@Path("id") int id);
+        Call<ResponseBody> completeItem(@Path("id") int id);
     }
 }

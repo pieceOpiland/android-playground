@@ -1,16 +1,33 @@
-package com.example.pie.android.models;
+package com.example.pie.android.model;
 
 import com.google.gson.annotations.Expose;
 
 public class TodoItem {
 
-    // I don't think this actually does anything with converter-gson.
-    // see: https://static.javadoc.io/com.google.code.gson/gson/2.6.2/com/google/gson/GsonBuilder.html#excludeFieldsWithoutExposeAnnotation--
+    /**
+     * The Server ID
+     */
     @Expose(serialize = false)
     private int id;
 
+    /**
+     * The Cient ID - Should never be sent to the server.
+     */
+    private long _id;
+
+    @Expose
     private String task;
+
+    @Expose
     private boolean done;
+
+    public long get_id() {
+        return _id;
+    }
+
+    public void set_id(long _id) {
+        this._id = _id;
+    }
 
     public int getId() {
         return id;
