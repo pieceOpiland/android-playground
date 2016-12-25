@@ -3,7 +3,6 @@ package com.example.pie.android;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -13,9 +12,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.pie.android.adapters.TodoAdapter;
-import com.example.pie.android.models.TodoItem;
-import com.example.pie.android.resources.TodoResource;
+import com.example.pie.android.adapter.TodoAdapter;
+import com.example.pie.android.model.TodoItem;
+import com.example.pie.android.rest.resource.TodoResource;
 
 import java.util.ArrayList;
 import java.util.List;

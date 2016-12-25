@@ -1,4 +1,4 @@
-package com.example.pie.android.adapters;
+package com.example.pie.android.adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,8 +10,8 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.example.pie.android.R;
-import com.example.pie.android.models.TodoItem;
-import com.example.pie.android.resources.TodoResource;
+import com.example.pie.android.model.TodoItem;
+import com.example.pie.android.rest.resource.TodoResource;
 
 import java.util.List;
 
@@ -47,7 +47,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
                 @Override
                 public void onClick(View v) {
                     if(isDone.isChecked()) {
-                        TodoResource.getInstance().finishItem(task.getId(), new Callback<ResponseBody>() {
+                        TodoResource.getInstance().completeItem(task.getId(), new Callback<ResponseBody>() {
                             @Override
                             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                                 task.complete();
