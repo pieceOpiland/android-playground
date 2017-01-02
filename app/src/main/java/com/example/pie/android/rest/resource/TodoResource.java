@@ -42,7 +42,6 @@ public class TodoResource {
     public void completeItem(int id, Callback<ResponseBody> cb) {
         resource.completeItem(id).enqueue(cb);
     }
-
     public interface TodoApi {
         @GET("/rest/todo")
         Call<List<TodoItem>> getItems();
