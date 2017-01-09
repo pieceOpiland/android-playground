@@ -69,15 +69,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         if(userInput.length() > 0){
             TodoItem newItem = new TodoItem();
             newItem.setTask(userInput);
-            TodoResource.getInstance().addItem(newItem, new Callback<TodoItem>() {
+            List<TodoItem> newItems = new ArrayList<>();
+            newItems.add(newItem);
+            TodoResource.getInstance().addItems(newItems, new Callback<List<TodoItem>>() {
                 @Override
-                public void onResponse(Call<TodoItem> call, Response<TodoItem> response) {
-                    adapter.add(response.body());
+                public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
+                    adapter.addAll(response.body());
                     input.setText("");
                 }
 
                 @Override
-                public void onFailure(Call<TodoItem> call, Throwable t) {
+                public void onFailure(Call<List<TodoItem>> call, Throwable t) {
                     Toast.makeText(MainActivity.this, "Failed to contact Server.", Toast.LENGTH_SHORT).show();
                     t.printStackTrace();
                 }
