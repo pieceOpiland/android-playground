@@ -33,7 +33,7 @@ public class TodoResource {
     }
 
     public void addItems(List<TodoItem> items, Callback<List<TodoItem>> cb) {
-        resource.addItem(items).enqueue(cb);
+        resource.addItems(items).enqueue(cb);
     }
 
     public void clearDone(Callback<List<TodoItem>> cb) {
@@ -46,9 +46,6 @@ public class TodoResource {
     public interface TodoApi {
         @GET("/rest/todo")
         Call<List<TodoItem>> getItems();
-
-        @POST("/rest/todo")
-        Call<List<TodoItem>> addItem(@Body List<TodoItem> items);
 
         @POST("/rest/todo")
         Call<List<TodoItem>> addItems(@Body List<TodoItem> items);
