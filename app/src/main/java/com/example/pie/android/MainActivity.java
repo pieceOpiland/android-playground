@@ -3,9 +3,6 @@ package com.example.pie.android;
 import android.os.Bundle;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
@@ -32,8 +29,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-//        setSupportActionBar((Toolbar)findViewById(R.id.toolbar));
 
         refresh = (SwipeRefreshLayout) findViewById(R.id.refresh);
         refresh.setOnRefreshListener(this);
@@ -111,26 +106,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRestart() {
-        super.onResume();
+        super.onRestart();
         retrieveItems();
-    }
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu m) {
-        MenuInflater mI = getMenuInflater();
-        mI.inflate(R.menu.main_menu, m);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item){
-        switch (item.getItemId()) {
-            case R.id.menu_refresh:
-                refresh.setRefreshing(true);
-                retrieveItems();
-                break;
-        }
-        return true;
     }
 }
