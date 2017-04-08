@@ -26,11 +26,17 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.3.1'
     testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.7.21'
 
+    // Dependencies for RxJava
+    compile 'io.reactivex.rxjava2:rxjava:2.0.8'
+    compile 'io.reactivex.rxjava2:rxandroid:2.0.1'
+
+    // Dependencies for retrofit
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.2.0'
     compile 'com.google.code.gson:gson:2.8.0'
 
-    testCompile 'com.squareup.retrofit2:retrofit-mock:2.1.0'
 
 }

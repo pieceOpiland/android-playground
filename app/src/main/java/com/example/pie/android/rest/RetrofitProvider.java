@@ -30,11 +30,4 @@ public class RetrofitProvider {
     public <T> T create(Class<T> service){
         return retrofit.create(service);
     }
-
-    // Just a test utility
-    public Retrofit setRetrofit(Retrofit retrofit) {
-        Retrofit current = this.retrofit;
-        this.retrofit = retrofit;
-        return current;
-    }
 }

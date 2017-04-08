@@ -15,6 +15,7 @@ import com.example.pie.android.rest.resource.TodoResource;
 
 import java.util.List;
 
+import io.reactivex.functions.Consumer;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -47,16 +48,16 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
                 @Override
                 public void onClick(View v) {
                     if(isDone.isChecked()) {
-                        TodoResource.getInstance().completeItem(task.getId(), new Callback<ResponseBody>() {
+                        TodoResource.getInstance().completeItem(task.getId()).subscribe(new Consumer<ResponseBody>() {
                             @Override
-                            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                            public void accept(ResponseBody responseBody) throws Exception {
                                 task.complete();
                                 isDone.setEnabled(false);
                             }
-
+                        }, new Consumer<Throwable>() {
                             @Override
-                            public void onFailure(Call<ResponseBody> call, Throwable t) {
-                                t.printStackTrace();
+                            public void accept(Throwable throwable) throws Exception {
+                                throwable.printStackTrace();
                             }
                         });
                     }
