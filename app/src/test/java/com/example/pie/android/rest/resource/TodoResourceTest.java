@@ -11,6 +11,7 @@ import java.util.List;
 import io.reactivex.Single;
 import io.reactivex.annotations.NonNull;
 import io.reactivex.functions.Consumer;
+import io.reactivex.plugins.RxJavaPlugins;
 import io.reactivex.schedulers.Schedulers;
 
 import static org.junit.Assert.*;
@@ -32,16 +33,7 @@ public class TodoResourceTest {
         when(mockApi.getItems())
                 .thenReturn(Single.just(Collections.<TodoItem>emptyList()));
 
-        testObj.getItems().subscribe(new Consumer<List<TodoItem>>() {
-            @Override
-            public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
-                assertEquals(0, todoItems.size());
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(@NonNull Throwable throwable) throws Exception {
-                fail();
-            }
-        });
+        testObj.getItems();
+        inOrder(mockApi).verify(mockApi, times(1)).getItems();
     }
 }
