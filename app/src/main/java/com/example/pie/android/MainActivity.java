@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     public void retrieveItems() {
-        TodoResource.getInstance().getItems().subscribe(new Consumer<List<TodoItem>>() {
+        new TodoResource().getItems().subscribe(new Consumer<List<TodoItem>>() {
             @Override
             public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
                 // This should probably be made more efficient.
@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             newItem.setTask(userInput);
             List<TodoItem> newItems = new ArrayList<>();
             newItems.add(newItem);
-            TodoResource.getInstance().addItems(newItems).subscribe(new Consumer<List<TodoItem>>() {
+            new TodoResource().addItems(newItems).subscribe(new Consumer<List<TodoItem>>() {
                 @Override
                 public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
                     adapter.addAll(todoItems);
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void clearCompletedTasks(View v) {
         final EditText input = (EditText) findViewById(R.id.newTask);
-        TodoResource.getInstance().clearDone().subscribe(new Consumer<List<TodoItem>>() {
+        new TodoResource().clearDone().subscribe(new Consumer<List<TodoItem>>() {
             @Override
             public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
                 adapter.clear();

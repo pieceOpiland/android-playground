@@ -19,12 +19,11 @@ import retrofit2.http.Path;
 
 public class TodoResource {
 
-    private static TodoResource instance = new TodoResource();
     private TodoApi resource;
     private Scheduler subscribeOn;
     private Scheduler observeOn;
 
-    private TodoResource() {
+    public TodoResource() {
         this(RetrofitProvider.getInstance().create(TodoApi.class),
                 Schedulers.io(),
                 AndroidSchedulers.mainThread());
@@ -34,10 +33,6 @@ public class TodoResource {
         this.resource = resource;
         this.subscribeOn = subscribeOn;
         this.observeOn = observeOn;
-    }
-
-    public static TodoResource getInstance() {
-        return instance;
     }
 
     public Single<List<TodoItem>> getItems() {

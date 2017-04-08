@@ -48,7 +48,7 @@ public class TodoAdapter extends ArrayAdapter<TodoItem> {
                 @Override
                 public void onClick(View v) {
                     if(isDone.isChecked()) {
-                        TodoResource.getInstance().completeItem(task.getId()).subscribe(new Consumer<ResponseBody>() {
+                        new TodoResource().completeItem(task.getId()).subscribe(new Consumer<ResponseBody>() {
                             @Override
                             public void accept(ResponseBody responseBody) throws Exception {
                                 task.complete();
