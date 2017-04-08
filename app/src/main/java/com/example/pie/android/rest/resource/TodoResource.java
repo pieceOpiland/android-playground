@@ -41,6 +41,7 @@ public class TodoResource {
                 .observeOn(observeOn);
     }
 
+
     public Single<List<TodoItem>> addItems(List<TodoItem> items) {
         return resource.addItems(items)
                 .subscribeOn(subscribeOn)
@@ -60,6 +61,7 @@ public class TodoResource {
 
     public interface TodoApi {
         @GET("/rest/todo")
+
         Single<List<TodoItem>> getItems();
 
         @POST("/rest/todo")

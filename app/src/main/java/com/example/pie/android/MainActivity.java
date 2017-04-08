@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             newItem.setTask(userInput);
             List<TodoItem> newItems = new ArrayList<>();
             newItems.add(newItem);
+
             new TodoResource().addItems(newItems).subscribe(new Consumer<List<TodoItem>>() {
                 @Override
                 public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
