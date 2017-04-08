@@ -16,6 +16,8 @@ import com.example.pie.android.rest.resource.TodoResource;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.annotations.NonNull;
+import io.reactivex.functions.Consumer;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -40,20 +42,20 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     }
 
     public void retrieveItems() {
-        TodoResource.getInstance().getItems(new Callback<List<TodoItem>>() {
+        new TodoResource().getItems().subscribe(new Consumer<List<TodoItem>>() {
             @Override
-            public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
+            public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
                 // This should probably be made more efficient.
                 adapter.clear();
-                adapter.addAll(response.body());
+                adapter.addAll(todoItems);
                 refresh.setRefreshing(false);
             }
-
+        }, new Consumer<Throwable>() {
             @Override
-            public void onFailure(Call<List<TodoItem>> call, Throwable t) {
+            public void accept(@NonNull Throwable throwable) throws Exception {
                 refresh.setRefreshing(false);
                 Toast.makeText(MainActivity.this, "Failed to contact Server.", Toast.LENGTH_SHORT).show();
-                t.printStackTrace();
+                throwable.printStackTrace();
             }
         });
     }
@@ -66,17 +68,18 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
             newItem.setTask(userInput);
             List<TodoItem> newItems = new ArrayList<>();
             newItems.add(newItem);
-            TodoResource.getInstance().addItems(newItems, new Callback<List<TodoItem>>() {
+
+            new TodoResource().addItems(newItems).subscribe(new Consumer<List<TodoItem>>() {
                 @Override
-                public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
-                    adapter.addAll(response.body());
+                public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
+                    adapter.addAll(todoItems);
                     input.setText("");
                 }
-
+            }, new Consumer<Throwable>() {
                 @Override
-                public void onFailure(Call<List<TodoItem>> call, Throwable t) {
+                public void accept(@NonNull Throwable throwable) throws Exception {
                     Toast.makeText(MainActivity.this, "Failed to contact Server.", Toast.LENGTH_SHORT).show();
-                    t.printStackTrace();
+                    throwable.printStackTrace();
                 }
             });
         }
@@ -84,17 +87,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     public void clearCompletedTasks(View v) {
         final EditText input = (EditText) findViewById(R.id.newTask);
-        TodoResource.getInstance().clearDone(new Callback<List<TodoItem>>() {
+        new TodoResource().clearDone().subscribe(new Consumer<List<TodoItem>>() {
             @Override
-            public void onResponse(Call<List<TodoItem>> call, Response<List<TodoItem>> response) {
+            public void accept(@NonNull List<TodoItem> todoItems) throws Exception {
                 adapter.clear();
-                adapter.addAll(response.body());
+                adapter.addAll(todoItems);
                 input.setText("");
             }
-
+        }, new Consumer<Throwable>() {
             @Override
-            public void onFailure(Call<List<TodoItem>> call, Throwable t) {
-                t.printStackTrace();
+            public void accept(@NonNull Throwable throwable) throws Exception {
+                throwable.printStackTrace();
             }
         });
     }

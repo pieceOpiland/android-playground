@@ -5,9 +5,11 @@ import com.example.pie.android.rest.RetrofitProvider;
 
 import java.util.List;
 
+import io.reactivex.Scheduler;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.ResponseBody;
-import retrofit2.Call;
-import retrofit2.Callback;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
@@ -17,43 +19,58 @@ import retrofit2.http.Path;
 
 public class TodoResource {
 
-    private static TodoResource instance = new TodoResource();
     private TodoApi resource;
+    private Scheduler subscribeOn;
+    private Scheduler observeOn;
 
-    private TodoResource() {
-        resource = RetrofitProvider.getInstance().create(TodoApi.class);
+    public TodoResource() {
+        this(RetrofitProvider.getInstance().create(TodoApi.class),
+                Schedulers.io(),
+                AndroidSchedulers.mainThread());
     }
 
-    public static TodoResource getInstance() {
-        return instance;
+    public TodoResource(TodoApi resource, Scheduler subscribeOn, Scheduler observeOn) {
+        this.resource = resource;
+        this.subscribeOn = subscribeOn;
+        this.observeOn = observeOn;
     }
 
-    public void getItems(Callback<List<TodoItem>> cb) {
-        resource.getItems().enqueue(cb);
+    public Single<List<TodoItem>> getItems() {
+        return resource.getItems()
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn);
     }
 
-    public void addItems(List<TodoItem> items, Callback<List<TodoItem>> cb) {
-        resource.addItems(items).enqueue(cb);
+
+    public Single<List<TodoItem>> addItems(List<TodoItem> items) {
+        return resource.addItems(items)
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn);
     }
 
-    public void clearDone(Callback<List<TodoItem>> cb) {
-        resource.clearDone().enqueue(cb);
+    public Single<List<TodoItem>> clearDone() {
+        return resource.clearDone()
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn);
     }
-    public void completeItem(int id, Callback<ResponseBody> cb) {
-        resource.completeItem(id).enqueue(cb);
+    public Single<ResponseBody> completeItem(int id) {
+        return resource.completeItem(id)
+                .subscribeOn(subscribeOn)
+                .observeOn(observeOn);
     }
 
     public interface TodoApi {
         @GET("/rest/todo")
-        Call<List<TodoItem>> getItems();
+
+        Single<List<TodoItem>> getItems();
 
         @POST("/rest/todo")
-        Call<List<TodoItem>> addItems(@Body List<TodoItem> items);
+        Single<List<TodoItem>> addItems(@Body List<TodoItem> items);
 
         @DELETE("/rest/todo")
-        Call<List<TodoItem>> clearDone();
+        Single<List<TodoItem>> clearDone();
 
         @PUT("/rest/todo/{id}")
-        Call<ResponseBody> completeItem(@Path("id") int id);
+        Single<ResponseBody> completeItem(@Path("id") int id);
     }
 }
