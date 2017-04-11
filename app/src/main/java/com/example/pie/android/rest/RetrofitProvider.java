@@ -1,5 +1,6 @@
 package com.example.pie.android.rest;
 
+import com.example.pie.android.BuildConfig;
 import com.google.gson.GsonBuilder;
 
 import retrofit2.Retrofit;
@@ -8,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitProvider {
 
-    private static final String BASE_URL = "http://limitless-everglades-64303.herokuapp.com/";
+    private static final String BASE_URL = BuildConfig.SERVER_URL;
 
     private static RetrofitProvider instance = new RetrofitProvider();
 
