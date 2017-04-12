@@ -1,4 +1,5 @@
 apply plugin: 'com.android.application'
+apply plugin: 'jacoco'
 
 android {
     compileSdkVersion 25
@@ -14,6 +15,7 @@ android {
     buildTypes {
         debug {
             buildConfigField "String", "SERVER_URL", '"http://localhost:8080"'
+            testCoverageEnabled = true
         }
         release {
             buildConfigField "String", "SERVER_URL", '"http://limitless-everglades-64303.herokuapp.com/"'
