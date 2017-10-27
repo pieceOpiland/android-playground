@@ -5,7 +5,6 @@ import com.example.pie.android.rest.RetrofitProvider;
 
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -20,43 +19,37 @@ import retrofit2.http.Path;
 public class TodoResource {
 
     private TodoApi resource;
-    private Scheduler subscribeOn;
-    private Scheduler observeOn;
 
     public TodoResource() {
-        this(RetrofitProvider.getInstance().create(TodoApi.class),
-                Schedulers.io(),
-                AndroidSchedulers.mainThread());
+        this(RetrofitProvider.getInstance().create(TodoApi.class));
     }
 
-    public TodoResource(TodoApi resource, Scheduler subscribeOn, Scheduler observeOn) {
+    public TodoResource(TodoApi resource) {
         this.resource = resource;
-        this.subscribeOn = subscribeOn;
-        this.observeOn = observeOn;
     }
 
     public Single<List<TodoItem>> getItems() {
         return resource.getItems()
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
 
     public Single<List<TodoItem>> addItems(List<TodoItem> items) {
         return resource.addItems(items)
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Single<List<TodoItem>> clearDone() {
         return resource.clearDone()
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
     public Single<ResponseBody> completeItem(int id) {
         return resource.completeItem(id)
-                .subscribeOn(subscribeOn)
-                .observeOn(observeOn);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     public interface TodoApi {
