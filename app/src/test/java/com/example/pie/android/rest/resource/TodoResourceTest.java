@@ -1,10 +1,12 @@
 package com.example.pie.android.rest.resource;
 
 import com.example.pie.android.model.TodoItem;
+import com.example.pie.android.utility.TestSchedulerRule;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnit;
@@ -28,17 +30,11 @@ import static org.mockito.Mockito.*;
 
 public class TodoResourceTest {
 
+    @Rule public final TestSchedulerRule schedulerRule = TestSchedulerRule.rule();
     @Rule public final MockitoRule rule = MockitoJUnit.rule();
     @Mock private TodoResource.TodoApi mockApi;
 
-    private TodoResource testObj;
-    private TestScheduler scheduler;
-
-    @Before
-    public void setUp() {
-        scheduler = new TestScheduler();
-        testObj = new TodoResource(mockApi, scheduler, scheduler);
-    }
+    @InjectMocks private TodoResource testObj;
 
     @Test
     public void basicTest() {
@@ -49,7 +45,7 @@ public class TodoResourceTest {
 
         testObserver.assertNotComplete();
 
-        scheduler.triggerActions();
+        schedulerRule.getTestScheduler().triggerActions();
 
         testObserver.assertComplete()
                 .assertNoErrors()
