@@ -17,7 +17,7 @@ android {
     }
     buildTypes {
         debug {
-            buildConfigField "String", "SERVER_URL", '"http://limitless-everglades-64303.herokuapp.com/"'
+            buildConfigField "String", "SERVER_URL", '"http://localhost:8080"'
             testCoverageEnabled = true
         }
         release {
