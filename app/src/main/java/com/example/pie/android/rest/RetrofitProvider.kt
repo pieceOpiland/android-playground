@@ -9,10 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitProvider private constructor() {
 
-    private val retrofit: Retrofit
-
-    init {
-        retrofit = Retrofit.Builder()
+    private val retrofit: Retrofit = Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create(
                         GsonBuilder()
@@ -20,7 +17,6 @@ class RetrofitProvider private constructor() {
                                 .create()))
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .build()
-    }
 
     fun <T> create(service: Class<T>): T {
         return retrofit.create(service)
@@ -30,6 +26,6 @@ class RetrofitProvider private constructor() {
 
         private val BASE_URL = BuildConfig.SERVER_URL
 
-        val instance = RetrofitProvider()
+        val instance by lazy { RetrofitProvider() }
     }
 }

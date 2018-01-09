@@ -24,8 +24,8 @@ class TodoAdapter(context: Context, resource: Int, objects: List<TodoItem>) : Ar
             val isDone = view.findViewById<View>(R.id.done) as CheckBox
             val label = view.findViewById<View>(R.id.task) as TextView
 
-            isDone.isChecked = task.isDone
-            isDone.isEnabled = !task.isDone
+            isDone.isChecked = task.done
+            isDone.isEnabled = !task.done
             label.text = task.task
 
             isDone.setOnClickListener {

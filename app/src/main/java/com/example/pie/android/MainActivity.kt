@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
-import android.widget.ListView
 import android.widget.Toast
 
 import com.example.pie.android.adapter.TodoAdapter
@@ -15,23 +14,19 @@ import com.example.pie.android.rest.resource.TodoResource
 
 import java.util.ArrayList
 
-import io.reactivex.annotations.NonNull
-import io.reactivex.functions.Consumer
+import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ArrayAdapter<TodoItem>
-    private lateinit var refresh: SwipeRefreshLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        refresh = findViewById<View>(R.id.refresh) as SwipeRefreshLayout
         refresh.setOnRefreshListener(this)
         adapter = TodoAdapter(this, R.layout.todo_item, ArrayList())
 
-        val list = findViewById<View>(R.id.list) as ListView
         list.adapter = adapter
         retrieveItems()
     }
