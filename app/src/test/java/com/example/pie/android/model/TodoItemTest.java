@@ -1,9 +1,9 @@
 package com.example.pie.android.model;
 
-import junit.framework.Assert;
-
 import org.junit.Before;
 import org.junit.Test;
+
+import static junit.framework.Assert.*;
 
 public class TodoItemTest {
 
@@ -24,8 +24,8 @@ public class TodoItemTest {
         testObj.setTask(task);
         testObj.setDone(isDone);
 
-        Assert.assertEquals(isDone, testObj.isDone());
-        Assert.assertEquals(id, testObj.getId());
-        Assert.assertEquals(task, testObj.getTask());
+        assertEquals(isDone, testObj.getDone());
+        assertEquals(id, testObj.getId());
+        assertEquals(task, testObj.getTask());
     }
 }
