@@ -12,7 +12,7 @@ import com.example.pie.android.R
 import com.example.pie.android.model.TodoItem
 import com.example.pie.android.rest.resource.TodoResource
 
-class TodoAdapter(context: Context, resource: Int, objects: List<TodoItem>) : ArrayAdapter<TodoItem>(context, resource, objects) {
+class TodoAdapter(private val todoResource: TodoResource, context: Context, resource: Int, objects: List<TodoItem>) : ArrayAdapter<TodoItem>(context, resource, objects) {
 
     override fun getView(index: Int, convertView: View?, parent: ViewGroup): View {
         val view = convertView ?: LayoutInflater.from(context)
@@ -30,7 +30,7 @@ class TodoAdapter(context: Context, resource: Int, objects: List<TodoItem>) : Ar
 
             isDone.setOnClickListener {
                 if (isDone.isChecked) {
-                    TodoResource().completeItem(task.id).subscribe({
+                    todoResource.completeItem(task.id).subscribe({
                         task.complete()
                         isDone.isEnabled = false
                     }, { throwable -> throwable.printStackTrace() })

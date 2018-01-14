@@ -14,7 +14,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
-class TodoResource @JvmOverloads constructor(private val resource: TodoApi = RetrofitProvider.instance.create(TodoApi::class.java)) {
+class TodoResource(private val resource: TodoApi) {
 
     val items: Single<List<TodoItem>>
         get() = resource.items
