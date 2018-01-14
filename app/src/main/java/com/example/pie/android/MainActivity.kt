@@ -10,6 +10,7 @@ import android.widget.Toast
 
 import com.example.pie.android.adapter.TodoAdapter
 import com.example.pie.android.model.TodoItem
+import com.example.pie.android.rest.RetrofitProvider
 import com.example.pie.android.rest.resource.TodoResource
 
 import java.util.ArrayList
@@ -19,20 +20,21 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ArrayAdapter<TodoItem>
+    private val resource: TodoResource = TodoResource(RetrofitProvider.instance.create(TodoResource.TodoApi::class.java))
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         refresh.setOnRefreshListener(this)
-        adapter = TodoAdapter(this, R.layout.todo_item, ArrayList())
+        adapter = TodoAdapter(resource, this, R.layout.todo_item, ArrayList())
 
         list.adapter = adapter
         retrieveItems()
     }
 
     fun retrieveItems() {
-        TodoResource().items.subscribe({ todoItems ->
+        resource.items.subscribe({ todoItems ->
             // This should probably be made more efficient.
             adapter.clear()
             adapter.addAll(todoItems)
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
             val newItems = ArrayList<TodoItem>()
             newItems.add(newItem)
 
-            TodoResource().addItems(newItems).subscribe({ todoItems ->
+            resource.addItems(newItems).subscribe({ todoItems ->
                 adapter.addAll(todoItems)
                 input.setText("")
             }) { throwable ->
@@ -65,7 +67,7 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     fun clearCompletedTasks(v: View) {
         val input = findViewById<View>(R.id.newTask) as EditText
-        TodoResource().clearDone().subscribe({ todoItems ->
+        resource.clearDone().subscribe({ todoItems ->
             adapter.clear()
             adapter.addAll(todoItems)
             input.setText("")
