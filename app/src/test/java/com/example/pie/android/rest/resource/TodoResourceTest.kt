@@ -1,5 +1,6 @@
 package com.example.pie.android.rest.resource
 
+import com.example.pie.android.rest.TodoResource
 import com.example.pie.android.utility.TestSchedulerRule
 
 import org.junit.Rule

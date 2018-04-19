@@ -1,20 +1,26 @@
-package com.example.pie.android.rest.resource
+package com.example.pie.android.rest
 
 import com.example.pie.android.model.TodoItem
-import com.example.pie.android.rest.RetrofitProvider
 
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import okhttp3.ResponseBody
+import retrofit2.Retrofit
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class TodoResource(private val resource: TodoApi) {
+
+    @Inject
+    constructor(retrofit: Retrofit): this(retrofit.create(TodoApi::class.java))
 
     val items: Single<List<TodoItem>>
         get() = resource.items

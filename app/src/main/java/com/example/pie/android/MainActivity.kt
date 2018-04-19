@@ -1,9 +1,7 @@
 package com.example.pie.android
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -12,17 +10,19 @@ import android.widget.Toast
 import com.example.pie.android.adapter.TodoAdapter
 import com.example.pie.android.model.TodoItem
 import com.example.pie.android.rest.RetrofitProvider
-import com.example.pie.android.rest.resource.TodoResource
+import com.example.pie.android.rest.TodoResource
+import dagger.android.support.DaggerAppCompatActivity
 
 import java.util.ArrayList
 
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
-class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
+class MainActivity : DaggerAppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ArrayAdapter<TodoItem>
     private val items = ArrayList<TodoItem>()
-    private val resource: TodoResource = TodoResource(RetrofitProvider.instance.create(TodoResource.TodoApi::class.java))
+    @Inject lateinit var resource: TodoResource
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

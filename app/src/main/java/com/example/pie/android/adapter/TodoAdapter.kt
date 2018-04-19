@@ -10,7 +10,7 @@ import android.widget.TextView
 
 import com.example.pie.android.R
 import com.example.pie.android.model.TodoItem
-import com.example.pie.android.rest.resource.TodoResource
+import com.example.pie.android.rest.TodoResource
 
 class TodoAdapter(private val todoResource: TodoResource, context: Context, resource: Int, objects: List<TodoItem>) : ArrayAdapter<TodoItem>(context, resource, objects) {
 
