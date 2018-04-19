@@ -1,6 +1,7 @@
 package com.example.pie.android
 
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.support.v4.widget.SwipeRefreshLayout
 import android.support.v7.app.AppCompatActivity
 import android.view.View
@@ -20,6 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
 
     private lateinit var adapter: ArrayAdapter<TodoItem>
+    private val items = ArrayList<TodoItem>()
     private val resource: TodoResource = TodoResource(RetrofitProvider.instance.create(TodoResource.TodoApi::class.java))
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,13 +29,17 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         setContentView(R.layout.activity_main)
 
         refresh.setOnRefreshListener(this)
-        adapter = TodoAdapter(resource, this, R.layout.todo_item, ArrayList())
+        adapter = TodoAdapter(resource, this, R.layout.todo_item, items)
 
         list.adapter = adapter
-        retrieveItems()
+        if (savedInstanceState != null) {
+            adapter.addAll(savedInstanceState.getParcelableArrayList(ITEMS_PARAM))
+        } else {
+            retrieveItems()
+        }
     }
 
-    fun retrieveItems() {
+    private fun retrieveItems() {
         resource.items.subscribe({ todoItems ->
             // This should probably be made more efficient.
             adapter.clear()
@@ -78,8 +84,12 @@ class MainActivity : AppCompatActivity(), SwipeRefreshLayout.OnRefreshListener {
         retrieveItems()
     }
 
-    public override fun onRestart() {
-        super.onRestart()
-        retrieveItems()
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.putParcelableArrayList(ITEMS_PARAM, items)
+    }
+
+    companion object {
+        private const val ITEMS_PARAM = "items"
     }
 }
