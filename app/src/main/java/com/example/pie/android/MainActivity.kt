@@ -9,7 +9,6 @@ import android.widget.Toast
 
 import com.example.pie.android.adapter.TodoAdapter
 import com.example.pie.android.model.TodoItem
-import com.example.pie.android.rest.RetrofitProvider
 import com.example.pie.android.rest.TodoResource
 import dagger.android.support.DaggerAppCompatActivity
 
@@ -47,7 +46,7 @@ class MainActivity : DaggerAppCompatActivity(), SwipeRefreshLayout.OnRefreshList
             refresh.isRefreshing = false
         }) { throwable ->
             refresh.isRefreshing = false
-            Toast.makeText(this@MainActivity, "Failed to contact Server.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Failed to contact Server.", Toast.LENGTH_SHORT).show()
             throwable.printStackTrace()
         }
     }
@@ -65,7 +64,7 @@ class MainActivity : DaggerAppCompatActivity(), SwipeRefreshLayout.OnRefreshList
                 adapter.addAll(todoItems)
                 input.setText("")
             }) { throwable ->
-                Toast.makeText(this@MainActivity, "Failed to contact Server.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Failed to contact Server.", Toast.LENGTH_SHORT).show()
                 throwable.printStackTrace()
             }
         }
