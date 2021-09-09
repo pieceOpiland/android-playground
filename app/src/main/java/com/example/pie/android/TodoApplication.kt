@@ -6,5 +6,5 @@ import dagger.android.DaggerApplication
 
 class TodoApplication: DaggerApplication() {
     override fun applicationInjector(): AndroidInjector<TodoApplication> =
-            DaggerApplicationComponent.builder().create(this)
+            DaggerApplicationComponent.factory().create(this)
 }

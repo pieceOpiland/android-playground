@@ -19,7 +19,7 @@ class TodoResourceTest {
     @Rule @JvmField val rule = MockitoJUnit.rule()
 
     @Mock private lateinit var mockApi: TodoResource.TodoApi
-    @InjectMocks lateinit private var testObj: TodoResource
+    @InjectMocks private lateinit var testObj: TodoResource
 
     @Test
     fun basicTest() {
@@ -36,6 +36,6 @@ class TodoResourceTest {
                 .assertNoErrors()
                 .assertValue { todoItems -> todoItems.isEmpty() }
 
-        inOrder(mockApi).verify<TodoResource.TodoApi>(mockApi, times(1)).items
+        inOrder(mockApi).verify(mockApi, times(1)).items
     }
 }

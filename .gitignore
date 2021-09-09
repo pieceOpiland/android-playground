@@ -5,5 +5,6 @@
 /projectFilesBackup/.idea/workspace.xml
 .DS_Store
 /build
+/out
 /captures
 .externalNativeBuild
